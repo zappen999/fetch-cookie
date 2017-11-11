@@ -8,10 +8,10 @@ module.exports = function fetchCookieDecorator (fetch, jar) {
   var getCookieString = denodeify(jar.getCookieString.bind(jar))
   var setCookie = denodeify(jar.setCookie.bind(jar))
 
-  return function fetchCookie (url, opts) {
+  return function fetchCookie (url, opts, expire = true) {
     opts = opts || {}
 
-    return getCookieString(url)
+    return getCookieString(url, { expire })
       .then(function (cookie) {
         return fetch(url, Object.assign(opts, {
           headers: Object.assign(opts.headers || {}, (cookie ? { cookie: cookie } : {}))
