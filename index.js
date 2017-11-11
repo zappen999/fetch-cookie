@@ -13,9 +13,11 @@ module.exports = function fetchCookieDecorator (fetch, jar, expire = true) {
 
     return getCookieString(url, { expire })
       .then(function (cookie) {
-        return fetch(url, Object.assign(opts, {
+        const realopts = Object.assign(opts, {
           headers: Object.assign(opts.headers || {}, (cookie ? { cookie: cookie } : {}))
-        }))
+        });
+        console.log('realopts', realopts);
+        return fetch(url, realopts);
       })
       .then(function (res) {
         var cookies
